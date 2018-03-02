@@ -62,7 +62,16 @@ def make_text(chains):
 
     words = []
 
-    # your code goes here
+    link = choice(chains.keys())
+    words.extend([link[0], link[1]])
+
+    while True:
+        if words[-1] == "am?":
+            break
+        else:
+            new_link = choice(chains[link])
+            words.append(new_link)
+            link = (words[-2], words[-1])
 
     return " ".join(words)
 

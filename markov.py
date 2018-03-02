@@ -66,13 +66,10 @@ def make_text(chains):
     link = choice(chains.keys())
     words.extend([link[0], link[1]])
 
-    while True:
-        if chains[link] is None:
-            break
-        else:
-            new_link = choice(chains[link])
-            words.append(new_link)
-            link = (words[-2], words[-1])
+    while chains[link]:
+        new_link = choice(chains[link])
+        words.append(new_link)
+        link = (words[-2], words[-1])
 
     return " ".join(words)
 

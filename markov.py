@@ -47,16 +47,13 @@ def make_chains(text_string):
 
     try:
         for num in range(len(words)):
-            chains[(words[num], words[num + 1])] = [words[num + 2]]
-            # if chains[(words[num], words[num + 1])] not in chains:
-            #     chains[(words[num], words[num + 1])] = [chains[words[num + 2]]]
-            # else:
-            #     chains[(words[num], words[num + 1])] = chains[(words[num], words[num + 1])].append([words[num + 2]])
-
+            if (words[num], words[num + 1]) not in chains:
+                chains[(words[num], words[num + 1])] = [words[num + 2]]
+            else:
+                chains[(words[num], words[num + 1])].append(words[num + 2])
     except:
         pass
 
-    print chains
     return chains
 
 

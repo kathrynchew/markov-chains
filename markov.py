@@ -52,7 +52,7 @@ def make_chains(text_string):
             else:
                 chains[(words[num], words[num + 1])].append(words[num + 2])
     except:
-        pass
+        chains[(words[-2], words[-1])] = None
 
     return chains
 

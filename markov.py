@@ -46,6 +46,13 @@ def make_chains(text_string):
 
     words = text_string.split()
 
+### DYNAMIC N-GRAMS VERSION HERE ###
+    # n_gram = tuple()
+
+    # for num in range(sys.argv[2]):
+
+
+### STATIC BI-GRAMS VERSION HERE ###
     try:
         for num in range(len(words)):
             if (words[num], words[num + 1]) not in chains:

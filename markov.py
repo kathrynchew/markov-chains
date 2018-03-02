@@ -66,7 +66,7 @@ def make_text(chains):
     words.extend([link[0], link[1]])
 
     while True:
-        if words[-1] == "am?":
+        if chains[link] is None:
             break
         else:
             new_link = choice(chains[link])

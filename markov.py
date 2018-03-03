@@ -47,38 +47,56 @@ def make_chains(text_string):
     words = text_string.split()
 
 ### DYNAMIC N-GRAMS VERSION HERE ###
-    # n_gram = tuple()
+    n_gram = tuple()
+    length_of_n = int(sys.argv[2])
 
-    # for num in range(sys.argv[2]):
+    # try:
+    for num in range(len(words)):
+        if len(n_gram) < length_of_n:
+            n_gram = n_gram + (words[num],)
+            print n_gram
+        else:
+            if n_gram not in chains:
+                chains[n_gram] = [words[num]]
+            else:
+                chains[n_gram].append(words[num1])
+            n_gram = tuple()
+
+    print chains
+
+    # except:
+    #     for num in range(len(words)):
+    #         if len(n_gram) < length_of_n:
+    #             n_gram = (words)
 
 
 ### STATIC BI-GRAMS VERSION HERE ###
-    try:
-        for num in range(len(words)):
-            if (words[num], words[num + 1]) not in chains:
-                chains[(words[num], words[num + 1])] = [words[num + 2]]
-            else:
-                chains[(words[num], words[num + 1])].append(words[num + 2])
-    except:
-        chains[(words[-2], words[-1])] = None
+    # try:
+    #     for num in range(len(words)):
+    #         if (words[num], words[num + 1]) not in chains:
+    #             chains[(words[num], words[num + 1])] = [words[num + 2]]
+    #         else:
+    #             chains[(words[num], words[num + 1])].append(words[num + 2])
+    # except:
+    #     chains[(words[-2], words[-1])] = None
 
-    return chains
+    # return chains
 
 
-def make_text(chains):
-    """Return text from chains."""
+# def make_text(chains):
+#     """Return text from chains."""
 
-    words = []
+#     words = []
 
-    link = choice(chains.keys())
-    words.extend([link[0], link[1]])
+#     link = choice(chains.keys())
+#     words.extend([link[0], link[1]])
 
-    while chains[link]:
-        new_link = choice(chains[link])
-        words.append(new_link)
-        link = (words[-2], words[-1])
+#     while chains[link]:
+#         new_link = choice(chains[link])
+#         words.append(new_link)
+#         link = (words[-2], words[-1])
 
-    return " ".join(words)
+#     return " ".join(words)
 
 
 # input_path = "green-eggs.txt"

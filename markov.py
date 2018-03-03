@@ -3,6 +3,9 @@
 from random import choice
 import sys
 
+chains = {}
+start_sentence = []
+
 
 def open_and_read_file(file_path):
     """Take file path as string; return text as string.
@@ -17,7 +20,7 @@ def open_and_read_file(file_path):
     return file_contents
 
 
-def make_chains(text_string):
+def make_chains(text_string, chains, start_sentence):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -42,8 +45,6 @@ def make_chains(text_string):
         [None]
     """
 
-    chains = {}
-
     words = text_string.split()
 
     length_of_n = int(sys.argv[2])
@@ -54,21 +55,21 @@ def make_chains(text_string):
 
             if n_gram not in chains:
                 chains[n_gram] = [words[num + length_of_n]]
+                if n_gram[0].istitle():
+                    start_sentence.append(n_gram)
             else:
                 chains[n_gram].append(words[num + length_of_n])
     except:
         chains[tuple(words[0-length_of_n:])] = None
 
-    return chains
 
-
-def make_text(chains):
+def make_text(chains, start_sentence):
     """Return text from chains."""
     length_of_n = int(sys.argv[2])
 
     words = []
 
-    link = choice(chains.keys())
+    link = choice(start_sentence)
     words.extend(list(link))
 
     while chains[link]:
@@ -86,9 +87,9 @@ input_path = sys.argv[1]
 input_text = open_and_read_file(input_path)
 
 # Get a Markov chain
-chains = make_chains(input_text)
+make_chains(input_text, chains, start_sentence)
 
 # Produce random text
-random_text = make_text(chains)
+random_text = make_text(chains, start_sentence)
 
 print random_text

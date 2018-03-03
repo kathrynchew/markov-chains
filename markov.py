@@ -47,22 +47,24 @@ def make_chains(text_string):
     words = text_string.split()
 
 ### DYNAMIC N-GRAMS VERSION HERE ###
-    n_gram = tuple()
+    # n_gram = tuple()
     length_of_n = int(sys.argv[2])
 
-    # try:
-    for num in range(len(words)):
-        if len(n_gram) < length_of_n:
-            n_gram = n_gram + (words[num],)
-            print n_gram
-        else:
+    try:
+        for num in range(len(words)):
+            n_gram = tuple(words[num:num+length_of_n])
+            # if len(n_gram) < length_of_n:
+            #     n_gram = n_gram + (words[num],)
+            # print n_gram
+            # else:
             if n_gram not in chains:
-                chains[n_gram] = [words[num]]
+                chains[n_gram] = [words[num + length_of_n]]
             else:
-                chains[n_gram].append(words[num1])
-            n_gram = tuple()
+                chains[n_gram].append(words[num + length_of_n])
+    except:
+        chains[tuple(words[0-length_of_n:])] = None
 
-    print chains
+    # print chains
 
     # except:
     #     for num in range(len(words)):
@@ -80,23 +82,26 @@ def make_chains(text_string):
     # except:
     #     chains[(words[-2], words[-1])] = None
 
-    # return chains
+    return chains
 
 
-# def make_text(chains):
-#     """Return text from chains."""
+def make_text(chains):
+    """Return text from chains."""
+    length_of_n = int(sys.argv[2])
 
-#     words = []
+    words = []
 
-#     link = choice(chains.keys())
-#     words.extend([link[0], link[1]])
+    link = choice(chains.keys())
+    words.extend(list(link))
+    print link
 
-#     while chains[link]:
-#         new_link = choice(chains[link])
-#         words.append(new_link)
-#         link = (words[-2], words[-1])
+    while chains[link]:
+        new_link = choice(chains[link])
+        words.append(new_link)
+        link = tuple(words[0 - length_of_n:])
+        # link = (words[-2], words[-1])
 
-#     return " ".join(words)
+    return " ".join(words)
 
 
 # input_path = "green-eggs.txt"

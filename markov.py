@@ -46,41 +46,18 @@ def make_chains(text_string):
 
     words = text_string.split()
 
-### DYNAMIC N-GRAMS VERSION HERE ###
-    # n_gram = tuple()
     length_of_n = int(sys.argv[2])
 
     try:
         for num in range(len(words)):
             n_gram = tuple(words[num:num+length_of_n])
-            # if len(n_gram) < length_of_n:
-            #     n_gram = n_gram + (words[num],)
-            # print n_gram
-            # else:
+
             if n_gram not in chains:
                 chains[n_gram] = [words[num + length_of_n]]
             else:
                 chains[n_gram].append(words[num + length_of_n])
     except:
         chains[tuple(words[0-length_of_n:])] = None
-
-    # print chains
-
-    # except:
-    #     for num in range(len(words)):
-    #         if len(n_gram) < length_of_n:
-    #             n_gram = (words)
-
-
-### STATIC BI-GRAMS VERSION HERE ###
-    # try:
-    #     for num in range(len(words)):
-    #         if (words[num], words[num + 1]) not in chains:
-    #             chains[(words[num], words[num + 1])] = [words[num + 2]]
-    #         else:
-    #             chains[(words[num], words[num + 1])].append(words[num + 2])
-    # except:
-    #     chains[(words[-2], words[-1])] = None
 
     return chains
 
@@ -93,13 +70,11 @@ def make_text(chains):
 
     link = choice(chains.keys())
     words.extend(list(link))
-    print link
 
     while chains[link]:
         new_link = choice(chains[link])
         words.append(new_link)
         link = tuple(words[0 - length_of_n:])
-        # link = (words[-2], words[-1])
 
     return " ".join(words)
 

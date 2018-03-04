@@ -7,15 +7,20 @@ chains = {}
 start_sentence = []
 
 
-def open_and_read_file(file_path):
+def open_and_read_files():
     """Take file path as string; return text as string.
 
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
-
+    file_path = sys.argv[1]
     file_path = file_path.split("/")
     file_contents = open(file_path[-1]).read()
+
+    if sys.argv[3]:
+        file_path2 = sys.argv[3].split("/")
+        file_contents2 = open(file_path2[-1]).read()
+        file_contents = file_contents + " " + file_contents2
 
     return file_contents
 
@@ -81,10 +86,10 @@ def make_text(chains, start_sentence):
 
 
 # input_path = "green-eggs.txt"
-input_path = sys.argv[1]
+# input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+input_text = open_and_read_files()
 
 # Get a Markov chain
 make_chains(input_text, chains, start_sentence)

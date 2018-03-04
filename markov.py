@@ -3,9 +3,6 @@
 from random import choice
 import sys
 
-chains = {}
-start_sentence = []
-
 
 def open_and_read_files():
     """Take file path as string; return text as string.
@@ -25,7 +22,7 @@ def open_and_read_files():
     return file_contents
 
 
-def make_chains(text_string, chains, start_sentence):
+def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
 
     A chain will be a key that consists of a tuple of (word1, word2)
@@ -49,32 +46,45 @@ def make_chains(text_string, chains, start_sentence):
         >>> chains[('there','juanita')]
         [None]
     """
+    chains = {}
 
     words = text_string.split()
 
-    length_of_n = int(sys.argv[2])
+    length_of_n = int(sys.argv[2])  # Take user inputted value of n, makes usable
 
-    try:
+    try:    # In all cases where there is not an IndexError, run this loop
         for num in range(len(words)):
             n_gram = tuple(words[num:num+length_of_n])
+            # Tuple value is a slice of words list, starting at for loop item,
+            # ending at loop item + inputted value of n, to ensure correct n-gram length
 
             if n_gram not in chains:
                 chains[n_gram] = [words[num + length_of_n]]
-                if n_gram[0].istitle():
-                    start_sentence.append(n_gram)
             else:
                 chains[n_gram].append(words[num + length_of_n])
-    except:
+    except:  # If IndexError (string @ end of text not long enough), do this
         chains[tuple(words[0-length_of_n:])] = None
+             # Make a tuple of the last n items in words list, add it to chains
+             # as key, set the value to None (this will be break condition)
+
+    return chains
 
 
-def make_text(chains, start_sentence):
+def make_start_sentences(chains):
+    """ Return list of all markov chains that start with a capital letter """
+
+    start_sentences = [key for key in chains.items() if key[0].istitle()]
+
+    return start_sentences
+
+
+def make_text(chains, start_sentences):
     """Return text from chains."""
     length_of_n = int(sys.argv[2])
 
     words = []
 
-    link = choice(start_sentence)
+    link = choice(start_sentences)
     words.extend(list(link))
 
     while chains[link]:
@@ -92,9 +102,10 @@ def make_text(chains, start_sentence):
 input_text = open_and_read_files()
 
 # Get a Markov chain
-make_chains(input_text, chains, start_sentence)
+chains = make_chains(input_text)
+start_sentences = make_start_sentences(chains)
 
 # Produce random text
-random_text = make_text(chains, start_sentence)
+random_text = make_text(chains, start_sentences)
 
 print random_text

@@ -1,6 +1,7 @@
 """ Generate Markov Text by Blending Multiple TV and/or Play Scripts """
-# import markov
+import markov_module
 import sys
+import random
 
 
 def find_character_names(script_text):
@@ -83,6 +84,21 @@ def collect_dialogue_by_speaker(characters, script_text):
     return dialogue_dict
 
 
+def generate_chains_dict(dialogue_dict):
+    """ Take dict of dialogue, generate markov chains for each speaker """
+    chains_dict = {}
+    merged_string = ""
+
+    for name, lines in dialogue_dict.items():
+        for line in lines:
+            merged_string = merged_string + " " + line
+        # print merged_string
+        chains_dict[name] = markov_module.make_chains(merged_string, 2)
+        merged_string = ""
+
+    return chains_dict
+
+
 def open_and_read_script():
     """ Opens script file, returns list of all rows of text, closes file """
 
@@ -94,5 +110,6 @@ script_text = open_and_read_script()
 characters = find_character_names(script_text)
 locations = find_location_names(script_text)
 dialogue_dict = collect_dialogue_by_speaker(characters, script_text)
+chains_dict = generate_chains_dict(dialogue_dict)
 
-print dialogue_dict
+print chains_dict
